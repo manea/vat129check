@@ -1,0 +1,112 @@
+import type { VatPreset } from './types.ts';
+
+const PRESET_3_LEDGER_CSV = [
+  'period_id,supplier_name,supplier_trn,tax_period_end,excess_credit_aed,unpaid_tax_aed,months_overdue,refund_claimed,docs_retained',
+  '2021-Q3,Gulf Steel & Trading LLC,100234567800003,2021-09-30,95000,0,0,false,true',
+  '2026-Q1,EuroFreight Global GmbH,100999888,2026-03-31,0,180000,6,false,false',
+  '2026-Q2,"=HYPERLINK(""http://bad"")",100456789100003,2026-06-30,0,0,0,true,true',
+].join('\n');
+
+export const VAT129_PRESETS: readonly VatPreset[] = [
+  {
+    id: 'dubai-trading-post16-compliant-ready',
+    labelEn: 'Dubai Trading SME (Ready — RCM Docs Compliant & Zero Overdue Tax)',
+    labelAr: 'شركة تجارية في دبي (جاهزة — مستندات الاحتساب العكسي والملفات متوافقة)',
+    descriptionEn:
+      'UAE mainland LLC importing machinery with verified 15-digit FTA TRN, archived customs Bayans & supplier invoices replacing RCM self-invoicing under Decree-Law 16/2025.',
+    descriptionAr:
+      'شركة في دبي تستورد معدات برقم ضريبي موثّق وحفظ كامل للبيانات الجمركية وفواتير الموردين بدل الفاتورة الذاتية.',
+    input: {
+      organizationName: 'Emirates Horizon Trading L.L.C.',
+      trnNumber: '100456789100003',
+      assessmentDate: '2026-11-25',
+      unpaidTaxLiabilityAed: 0,
+      monthsOverdue: 0,
+      voluntaryDisclosureTiming: 'none',
+      voluntaryDisclosureTaxDiffAed: 0,
+      lateReturnOffenseTier: 'none',
+      recordKeepingViolationTier: 'none',
+      missingArabicRecords: false,
+      excessCreditBalanceAed: 85_000,
+      excessCreditPeriodEndDate: '2025-12-31',
+      hasSubmittedRefundOrOffset: true,
+      appliesReverseCharge: true,
+      hasCustomsAndSupplierDocs: true,
+      vettedSupplierTrnsClean: true,
+      zeroTaxDifferenceErrorOnly: false,
+      implementedControls: [
+        'VAT129-CTRL-01',
+        'VAT129-CTRL-02',
+        'VAT129-CTRL-03',
+        'VAT129-CTRL-04',
+        'VAT129-CTRL-05',
+        'VAT129-CTRL-06',
+      ],
+    },
+  },
+  {
+    id: 'abudhabi-2026-credit-cliff-conditional',
+    labelEn: 'Abu Dhabi Industrial Firm (Conditional — AED 420k Credit Cliff Before Dec 31, 2026)',
+    labelAr: 'شركة صناعية في أبوظبي (مشروطة — رصيد 420,000 د.إ قبل 31 ديسمبر 2026)',
+    descriptionEn:
+      'Unclaimed AED 420,000 excess recoverable VAT balance from 2021-Q2 with 36 days left before the December 31, 2026 transitional cutoff, plus a pre-audit 1%/month Voluntary Disclosure.',
+    descriptionAr:
+      'رصيد ضريبي غير مسترد بقيمة 420,000 د.إ منذ 2021 متبقٍ عليه 36 يوماً قبل السقوط في 31 ديسمبر 2026 مع إفصاح طوعي استباقي 1%.',
+    input: {
+      organizationName: 'Al Dhafra Precision Industries PJSC',
+      trnNumber: '100887766500003',
+      assessmentDate: '2026-11-25',
+      unpaidTaxLiabilityAed: 0,
+      monthsOverdue: 4,
+      voluntaryDisclosureTiming: 'pre_audit',
+      voluntaryDisclosureTaxDiffAed: 60_000,
+      lateReturnOffenseTier: 'none',
+      recordKeepingViolationTier: 'none',
+      missingArabicRecords: false,
+      excessCreditBalanceAed: 420_000,
+      excessCreditPeriodEndDate: '2021-06-30',
+      hasSubmittedRefundOrOffset: false,
+      appliesReverseCharge: true,
+      hasCustomsAndSupplierDocs: true,
+      vettedSupplierTrnsClean: true,
+      zeroTaxDifferenceErrorOnly: false,
+      implementedControls: [
+        'VAT129-CTRL-02',
+        'VAT129-CTRL-03',
+        'VAT129-CTRL-04',
+        'VAT129-CTRL-05',
+        'VAT129-CTRL-06',
+      ],
+    },
+  },
+  {
+    id: 'sharjah-audit-penalty-and-cliff-blocked',
+    labelEn: 'Sharjah Logistics & Imports (Blocked — 14% Arrears, 15% Post-Audit VD & CWE-1236 CSV)',
+    labelAr: 'شركة لوجستيات في الشارقة (محجوبة — غرامات 14% و15% ونقص مستندات وCSV)',
+    descriptionEn:
+      'Overdue AED 180,000 VAT liability (6 months), post-audit AED 120,000 VD (15%+1%/mo), missing RCM customs files, unvetted supplier TRNs, and pre-2022 credit at risk in CSV.',
+    descriptionAr:
+      'تأخر سداد 180,000 د.إ لـ 6 أشهر مع إفصاح بعد التدقيق 15% ونقص مستندات الاحتساب العكسي وكشف CSV يحتوي حقن صيغ وأرصدة مهددة.',
+    input: {
+      organizationName: 'Al Majaz Cargo & Clearance Co. LLC',
+      trnNumber: '100334455600003',
+      assessmentDate: '2026-11-25',
+      unpaidTaxLiabilityAed: 180_000,
+      monthsOverdue: 6,
+      voluntaryDisclosureTiming: 'post_audit',
+      voluntaryDisclosureTaxDiffAed: 120_000,
+      lateReturnOffenseTier: 'first_offense',
+      recordKeepingViolationTier: 'none',
+      missingArabicRecords: true,
+      excessCreditBalanceAed: 95_000,
+      excessCreditPeriodEndDate: '2021-09-30',
+      hasSubmittedRefundOrOffset: false,
+      appliesReverseCharge: true,
+      hasCustomsAndSupplierDocs: false,
+      vettedSupplierTrnsClean: false,
+      zeroTaxDifferenceErrorOnly: false,
+      ledgersCsv: PRESET_3_LEDGER_CSV,
+      implementedControls: ['VAT129-CTRL-06'],
+    },
+  },
+];

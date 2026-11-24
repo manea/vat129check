@@ -1,0 +1,20 @@
+services:
+  vat129check:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vat129check
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:4227:4227"
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 4227
+      VAT129CHECK_DATA_DIR: /app/data
+      BASE_PATH: ${BASE_PATH:-}
+    volumes:
+      - vat129check_data:/app/data
+
+volumes:
+  vat129check_data:

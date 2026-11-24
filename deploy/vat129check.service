@@ -1,0 +1,14 @@
+[Unit]
+Description=VAT129Check UAE VAT Amendments (16/2025 & 129/2025) Auditor
+After=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/vat129check
+EnvironmentFile=/etc/vat129check/.env
+ExecStart=/usr/bin/node --no-warnings /opt/vat129check/server/index.mjs
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=default.target
